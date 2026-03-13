@@ -1,0 +1,21 @@
+{
+  "name": "repliwatch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IPFS Replication Monitor — track provider counts and generate red lists for under-replicated CIDs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  },
+  "dependencies": {
+    "@helia/delegated-routing-v1-http-api-client": "^6.0.1",
+    "@libp2p/logger": "^6.2.2",
+    "multiformats": "^13.4.2"
+  }
+}
