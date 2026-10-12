@@ -8,6 +8,7 @@ Browser-based IPFS replication monitor. Queries delegated routing endpoints to d
 - Shows provider (peer) count per CID
 - Classifies CIDs as healthy, warning, or critical based on a configurable threshold
 - Exports a red list of under-replicated CIDs
+- Plots provider locations on a map from their advertised addresses
 
 An example version can be tried at: [RepliWatch](https://ipfs.io/ipfs/bafybeigs3uk5xbvknxfnyr4murfsb3f4dtot7clon7qak34hgwyc5nzot4/)
 
@@ -28,6 +29,7 @@ Open `http://localhost:3000`.
 3. Use the filter bar to view critical / warning / healthy / error subsets.
 4. Click any CID or peer ID to copy it to clipboard.
 5. **Export Red List** downloads all under-replicated CIDs as a text file.
+6. Click the map icon on a scanned row to see where its providers are. Locations are approximate.
 
 CIDs can also be added manually (paste or upload a `.txt` file) and are prioritized for scanning.
 

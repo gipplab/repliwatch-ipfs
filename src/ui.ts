@@ -1,6 +1,7 @@
 import type { AppState, CidRecord, RiskLevel, ScanState, ScanStats } from './types'
 import { getRiskLevel } from './types'
 import type { Scanner } from './scanner'
+import { openProviderMap } from './map'
 
 const PAGE_SIZE = 100
 
@@ -234,6 +235,13 @@ function bindControls(scanner: Scanner) {
 
   document.getElementById('table-body')!.addEventListener('click', e => {
     const target = e.target as HTMLElement
+    const mapBtn = target.closest('.btn-map') as HTMLElement | null
+    if (mapBtn) {
+      const cid = mapBtn.dataset.cid
+      const rec = cid ? scanner.getState().cids.get(cid) : undefined
+      if (rec && rec.providers.length > 0) openProviderMap(rec)
+      return
+    }
     const deleteBtn = target.closest('.btn-delete') as HTMLElement | null
     if (deleteBtn) {
       const cid = deleteBtn.dataset.cid
@@ -372,7 +380,7 @@ function renderTable(records: CidRecord[], threshold: number) {
       <td class="col-cid"><code class="cid-code">${rec.cid}</code></td>
       <td class="col-providers"><span class="provider-count provider-${risk}">${rec.status === 'done' ? rec.providers.length : '—'}</span></td>
       <td class="col-peers">${renderPeers(rec)}</td>
-      <td class="col-actions"><button class="btn-delete" data-cid="${rec.cid}" title="Remove CID">delete</button></td>
+      <td class="col-actions">${mapButton(rec)}<button class="btn-delete" data-cid="${esc(rec.cid)}" title="Remove CID">delete</button></td>
     </tr>`
   })
 
@@ -422,6 +430,13 @@ function renderPagination(total: number, scanner: Scanner) {
 
   html += `<span class="page-info">p.${currentPage + 1}/${pages} · ${total.toLocaleString()} items</span>`
   el.innerHTML = html
+}
+
+const MAP_ICON = `<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M2 4.5 6 3l4 1.5L14 3v8.5L10 13l-4-1.5L2 13V4.5z"/><path fill="none" stroke="currentColor" stroke-width="1.2" d="M6 3v8.5M10 4.5V13"/></svg>`
+
+function mapButton(rec: CidRecord): string {
+  if (rec.providers.length === 0) return ''
+  return `<button type="button" class="btn-map" data-cid="${esc(rec.cid)}" title="Show providers on a map" aria-label="Show providers on a map">${MAP_ICON}</button>`
 }
 
 function statusBadge(rec: CidRecord, risk: RiskLevel): string {
